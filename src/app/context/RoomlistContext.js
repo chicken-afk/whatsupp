@@ -13,12 +13,22 @@ export const RoomListProvider = ({ children }) => {
     const [roomList, setRoomList] = useState([]);
     const router = useRouter();
     const dispatch = useDispatch();
+    const emailLogin = Cookies.get("email");
 
-    // Fungsi untuk mapping data dari API
+    // Check if emailLogin exists
+    if (!emailLogin) {
+        router.push("/");
+        return null;
+    }
+
+    // Fungsi untuk mapping data dari API, kecuali emailLogin
     const mapRoomlist = (data) => {
         return data.map((room) => ({
             id: room.room_id,
-            name: room.room_name
+            name: room.users
+                .filter(user => user.email !== emailLogin)
+                .map(user => user.email)
+                .join(", "),
         }));
     };
 
