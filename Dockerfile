@@ -1,10 +1,10 @@
-# Gunakan image Node.js resmi
+# Gunakan image Node.js versi terbaru
 FROM node:18-alpine
 
 # Set working directory di dalam container
 WORKDIR /app
 
-# Salin package.json dan package-lock.json (jika ada)
+# Salin package.json dan package-lock.json
 COPY package*.json ./
 
 # Install dependencies
@@ -16,8 +16,8 @@ COPY . .
 # Build aplikasi Next.js
 RUN npm run build
 
-# Jalankan aplikasi menggunakan mode production
-CMD ["npm", "start"]
+# Jalankan aplikasi dalam mode production
+CMD ["npm", "run", "start"]
 
 # Gunakan port 3000
 EXPOSE 3000
