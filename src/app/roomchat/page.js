@@ -3,16 +3,31 @@
 
 import Chat from './pages/chat';
 import Roomlist from './pages/roomlist';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import ModalStartChat from './components/modalStartChat';
 import Cookies from 'js-cookie';
+import { useIsMobile } from '../hooks/use-mobile';
+import { useSelector } from 'react-redux';
 
 
 const Room = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpenChat, setIsOpenChat] = useState(false);
     const currentEmailLogin = Cookies.get("email");
+    const isMobile = useIsMobile();
+    const roomState = useSelector((state) => state.room);
+    const ActiveRoomId = roomState.ActiveRoomId
+
+    useEffect(() => {
+        if (ActiveRoomId === null) {
+            setIsOpenChat(false);
+        } else {
+            setIsOpenChat(true);
+        }
+    }, [ActiveRoomId]);
+
+    console.log("isMobile", isMobile);
 
     const [showModalStartChat, setShowModalStartChat] = useState(false);
 
@@ -22,7 +37,7 @@ const Room = () => {
 
     return (
         <div className="flex h-screen bg-white text-gray-800">
-            <div className="w-1/4 shadow-lg">
+            <div className={`shadow-lg ${isMobile ? "w-full" : "w-1/4"} ${isMobile && !isOpenChat ? "block" : isMobile && isOpenChat ? "hidden" : ""}`}>
                 <div className="flex justify-between items-center p-4 border-b border-blue-200">
                     <div>
                         <h1 className="text-2xl bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-blue-400 font-extrabold">Whatsupp</h1>
@@ -32,11 +47,11 @@ const Room = () => {
                 </div>
                 <Roomlist />
             </div>
-            <div className="w-3/4">
+            <div className={`${isMobile ? "w-full" : "w-3/4"} ${isMobile && isOpenChat === false ? "hidden" : "block"}`}>
                 <Chat />
             </div>
             <ModalStartChat show={showModalStartChat} handleClose={() => setShowModalStartChat(false)} />
-        </div>
+        </div >
     );
 };
 

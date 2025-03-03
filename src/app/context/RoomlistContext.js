@@ -4,7 +4,6 @@ import { createContext, useContext, useState, useEffect } from "react";
 import { apiGet } from "@/app/api/apiClient"; // Sesuaikan dengan path utils API
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { setActiveRoomId, setActiveRoomEmail } from "../store/roomSlice";
 import Cookies from "js-cookie";
 
 const RoomListContext = createContext();
@@ -40,10 +39,6 @@ export const RoomListProvider = ({ children }) => {
             console.log("fetch roomlist", statusCode, responseBody);
             if (statusCode === 200) {
                 const rooms = mapRoomlist(responseBody.data); // Mapping data sebelum disimpan
-                if (rooms.length > 0) {
-                    dispatch(setActiveRoomId(rooms[0].id));
-                    dispatch(setActiveRoomEmail(rooms[0].name));
-                }
                 setRoomList(rooms);
             } else if (statusCode == 401) {
                 Cookies.remove("token");

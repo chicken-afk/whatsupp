@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     ActiveRoomId: null,
-    ActiveRoomEmail: "andikay@gmail.com",
+    ActiveRoomEmail: null,
 };
 
 const roomSlice = createSlice({

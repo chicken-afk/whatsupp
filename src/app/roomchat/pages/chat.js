@@ -3,10 +3,12 @@
 import { apiGet } from '@/app/api/apiClient';
 import Cookies from 'js-cookie';
 import { useEffect, useState, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import LoadingButton from '@/app/components/loadingButton';
 import { connectSocket } from "@/app/utils/socket";
 import { useRouter } from 'next/navigation';
+import { useIsMobile } from '@/app/hooks/use-mobile';
+import { setActiveRoomId, setActiveRoomEmail } from '@/app/store/roomSlice';
 
 const Chat = ({ }) => {
     const roomState = useSelector((state) => state.room);
@@ -18,6 +20,8 @@ const Chat = ({ }) => {
     const [joined, setJoined] = useState(false);
     const [messageData, setMessageData] = useState([]);
     const router = useRouter();
+    const isMobile = useIsMobile();
+    const dispatch = useDispatch();
 
     const currentEmailLogin = Cookies.get("email");
 
@@ -128,11 +132,21 @@ const Chat = ({ }) => {
         }
     };
 
+    const handleBacktoList = () => {
+        dispatch(setActiveRoomId(null));
+        dispatch(setActiveRoomEmail(null));
+    };
+
     return (
         <div className='flex flex-col h-full'>
             {isLoading ? (
                 <>
-                    <div className="text-right bg-green-400 text-white p-4">
+                    <div className="flex justify-between items-center bg-green-400 text-white p-4">
+                        <button onClick={handleBacktoList} className="p-2">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                            </svg>
+                        </button>
                         <h3 className="font-semibold text-white dark:text-white text-sm">{ActiveRoomEmail}</h3>
                     </div>
                     <div className='flex-grow flex items-center justify-center bg-gray-200'>
@@ -141,36 +155,45 @@ const Chat = ({ }) => {
                 </>
             ) : (
                 <>
-                    <div className="text-right bg-green-400 text-white p-4">
-                        <h3 className="font-semibold text-white dark:text-white text-sm">{ActiveRoomEmail}</h3>
+                    <div className={` ${isMobile ? 'flex justify-between items-center ' : 'text-right'} bg-green-400 text-white p-4`}>
+                        {isMobile && (
+                            <button onClick={handleBacktoList} className="p-2">
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                                </svg>
+                            </button>
+                        )}
+                        <h3 className="font-semibold text-white dark:text-white text-sm justify-end">{ActiveRoomEmail}</h3>
                     </div>
-                    <div className='bg-indigo-100 flex-grow px-20 py-10 overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-green-200'>
+                    <div className={`bg-indigo-100 flex-grow ${isMobile ? 'px-1 py-2 ' : 'px-20 py-6 '}  overflow-y-auto scrollbar-thin scrollbar-thumb-green-400 scrollbar-track-green-200`}>
                         {messageData.map((message) => (
-                            <div className={`flex items-start mb-4 gap-2.5 ${message.email === currentEmailLogin ? 'justify-end' : ''}`} key={message.created_at}>
-                                <div className="flex flex-col gap-1 w-full max-w-[420px]">
+                            <div className={`flex items-start mb-2 gap-2.5 ${message.email === currentEmailLogin ? 'justify-end' : ''}`} key={message.created_at}>
+                                <div className={`flex flex-col gap-1 w-full  ${isMobile ? 'max-w-[320px]' : 'max-w-[420px]'}`}>
                                     <div className={`flex items-center space-x-2 rtl:space-x-reverse ${message.email === currentEmailLogin ? 'justify-end' : ''}`}>
                                         {/* <span className="text-sm font-semibold text-gray-900 dark:text-white">{message.email} </span> */}
-                                        <span className="text-sm font-normal text-gray-500 dark:text-gray-400">{new Date(message.created_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', hour12: false })} {new Date(message.created_at).toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' })}</span>
+                                        <span className="text-xss text-gray-500 dark:text-gray-400">{new Date(message.created_at).toLocaleString([], { hour: '2-digit', minute: '2-digit', hour12: false })} {new Date(message.created_at).toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' })}</span>
                                     </div>
-                                    <div className={`flex flex-col leading-1.5 p-4 border-gray-200 bg-gray-200 ${message.email === currentEmailLogin ? 'bg-green-200 text-black rounded-l-lg rounded-br-lg' : 'rounded-r-lg rounded-bl-lg bg-white text-black'}`}>
-                                        <p className="text-sm font-normal"> {message.message}</p>
+                                    <div className={`flex flex-col leading-1.5 p-2 border-gray-200 bg-gray-200 ${message.email === currentEmailLogin ? 'bg-green-200 text-black rounded-l-lg rounded-br-lg' : 'rounded-r-lg rounded-bl-lg bg-white text-black'}`}>
+                                        <p className="text-xs"> {message.message}</p>
                                     </div>
                                     <div className={`flex items-center space-x-2 rtl:space-x-reverse ${message.email === currentEmailLogin ? 'justify-end' : ''}`}>
                                         {/* <span className="text-sm font-semibold text-gray-900 dark:text-white">{message.email} </span> */}
-                                        <span className={`text-xs font-normal text-gray-500 dark:text-gray-400`}>Delivered</span>
+                                        {/* <span className={`text-xs font-normal text-gray-500 dark:text-gray-400`}>Delivered</span> */}
                                     </div>
                                 </div>
                             </div>
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
-                    <div className='flex items-center p-2 shadow-lg'>
-                        <input value={sendMessageData} onChange={(e) => setSendMessageData(e.target.value)} onKeyPress={handleKeyPress} type="text" className='flex-grow p-2 border-indigo-400 rounded bg-gray-100 text-black' placeholder='Type your message...' />
-                        <button onClick={handleSendMessage} className='ml-2 p-2 bg-green-500 shadow-lg text-white rounded'>Send</button>
-                    </div>
+                    {ActiveRoomId !== null && (
+                        <div className='flex items-center p-2 shadow-lg'>
+                            <input value={sendMessageData} onChange={(e) => setSendMessageData(e.target.value)} onKeyPress={handleKeyPress} type="text" className='flex-grow p-2 border-indigo-400 rounded bg-gray-100 text-black' placeholder='Type your message...' />
+                            <button onClick={handleSendMessage} className='ml-2 p-2 bg-green-500 shadow-lg text-white rounded'>Send</button>
+                        </div>
+                    )}
                 </>
             )}
-        </div>
+        </div >
     );
 }
 

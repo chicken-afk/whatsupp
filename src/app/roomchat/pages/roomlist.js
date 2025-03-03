@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setActiveRoomEmail, setActiveRoomId } from "@/app/store/roomSlice";
+import { setActiveRoomEmail, setActiveRoomId, resetState } from "@/app/store/roomSlice";
 import { useRoomList } from "@/app/context/RoomlistContext";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
@@ -27,17 +27,18 @@ const Roomlist = () => {
         Cookies.remove("email");
         Cookies.remove("token");
         Cookies.remove("refreshToken");
+        dispatch(resetState());
         router.push("/");
     }
 
     return (
-        <div className="bg-white p-4 text-gray-900 dark:bg-gray-800 dark:text-white border-green-200">
-            <ul className="my-2">
+        <div className="bg-white p-4 text-gray-900 dark:bg-gray-800 dark:text-white divide-y divide-light-blue-400">
+            <ul className="my-2 divide-y divide-light-blue-400">
                 {roomList.map((room) => (
                     <li
                         key={room.id}
                         onClick={() => handleOnClickRoom(room.id)}
-                        className={`flex items-center justify-between p-2 border-gray-900 rounded-t dark:border-green-600 border-green-200 hover:bg-green-500 dark:hover:bg-green-500 cursor-pointer ${activeRoomId === room.id ? "bg-green-400 text-white" : ""
+                        className={`flex items-center justify-between p-1 rounded hover:bg-green-500 cursor-pointer ${activeRoomId === room.id ? "bg-green-500 text-white" : ""
                             }`}
                     >
                         <span className="text-base">{room.name}</span>

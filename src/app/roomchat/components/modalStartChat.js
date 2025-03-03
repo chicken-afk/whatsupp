@@ -74,12 +74,12 @@ const ModalStartChat = ({ show, handleClose }) => {
                     <div className="relative p-4 w-full max-w-2xl max-h-full">
                         <div className="relative bg-white rounded-lg shadow-sm dark:bg-gray-700">
                             <div className="flex items-center justify-between p-4 border-b rounded-t dark:border-gray-600 border-gray-200">
-                                <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Start Chatting</h3>
+                                <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Start Chatting</h3>
                             </div>
                             <div className="p-4 space-y-4">
                                 <form className="space-y-4">
                                     <div>
-                                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                        <label htmlFor="email" className="block text-xs font-medium text-gray-700 dark:text-gray-300">
                                             Input your friend email
                                         </label>
                                         <input onChange={(e) => setEmail(e.target.value)} type="email" id="email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm text-black" required />
@@ -88,8 +88,8 @@ const ModalStartChat = ({ show, handleClose }) => {
                                 </form>
                             </div>
                             <div className="flex items-center justify-end p-4 border-t border-gray-200 rounded-b dark:border-gray-600">
-                                <button onClick={handleClose} className="mx-1 text-white bg-gray-700 hover:bg-gray-800 font-medium rounded-lg text-sm px-5 py-2.5">Cancel</button>
-                                <button onClick={handleStartChat} className="mx-1 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">Start Chatting</button>
+                                <button onClick={handleClose} className="mx-1 text-white bg-gray-200 hover:bg-gray-800 font-medium rounded-lg text-sm px-2 py-1">Cancel</button>
+                                <button onClick={handleStartChat} className="mx-1 text-white bg-green-500 hover:bg-blue-800 font-medium rounded-lg text-sm px-2 py-1">Start Chatting</button>
                             </div>
                         </div>
                     </div>
