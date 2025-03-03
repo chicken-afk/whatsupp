@@ -53,9 +53,9 @@ const ModalStartChat = ({ show, handleClose }) => {
                     return
                 } else {
                     const data = responseBody.data;
-                    const { id, room_name } = data;
-                    dispatch(setActiveRoomId(id));
-                    dispatch(setActiveRoomEmail(room_name));
+                    const { id, room_id, room_name } = data;
+                    dispatch(setActiveRoomId(room_id));
+                    dispatch(setActiveRoomEmail(email));
                     fetchRoomlist();
                     handleClose();
                 }
