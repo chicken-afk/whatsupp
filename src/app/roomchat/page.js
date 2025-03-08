@@ -36,7 +36,7 @@ const Room = () => {
     }
 
     return (
-        <div className="flex h-screen bg-white text-gray-800">
+        <div className="flex min-h-screen h-[100dvh] bg-white text-gray-800">
             <div className={`shadow-lg ${isMobile ? "w-full" : "w-1/4"} ${isMobile && !isOpenChat ? "block" : isMobile && isOpenChat ? "hidden" : ""}`}>
                 <div className="flex justify-between items-center p-4 border-b border-blue-200">
                     <div>

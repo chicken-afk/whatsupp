@@ -1,6 +1,5 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/navbar";
 import ReduxProvider from "./store/provider";
 
 const geistSans = Geist({
@@ -13,9 +12,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+
 export const metadata = {
-  title: "Whatsupp",
-  description: "Realtime chatting apps",
+  title: "whatsupp",
+  description: "Realtime chatting apps"
 };
 
 

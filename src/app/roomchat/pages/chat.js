@@ -185,12 +185,14 @@ const Chat = ({ }) => {
                         ))}
                         <div ref={messagesEndRef} />
                     </div>
-                    {ActiveRoomId !== null && (
-                        <div className='flex items-center p-2 shadow-lg'>
-                            <input value={sendMessageData} onChange={(e) => setSendMessageData(e.target.value)} onKeyPress={handleKeyPress} type="text" className='flex-grow p-2 border-indigo-400 rounded bg-gray-100 text-black' placeholder='Type your message...' />
-                            <button onClick={handleSendMessage} className='ml-2 p-2 bg-green-500 shadow-lg text-white rounded'>Send</button>
-                        </div>
-                    )}
+                    <div className='flex items-center p-2 shadow-lg'>
+                        {ActiveRoomId !== null && (
+                            <>
+                                <input value={sendMessageData} onChange={(e) => setSendMessageData(e.target.value)} onKeyPress={handleKeyPress} type="text" className='flex-grow p-2 border-indigo-400 rounded bg-gray-100 text-black' placeholder='Type your message...' />
+                                <button onClick={handleSendMessage} className='ml-2 p-2 bg-green-500 shadow-lg text-white rounded'>Send</button>
+                            </>
+                        )}
+                    </div>
                 </>
             )}
         </div >
