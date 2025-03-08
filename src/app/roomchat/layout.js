@@ -5,7 +5,7 @@ export default function RootLayout({
 }) {
     return (
         <RoomListProvider>
-            <div className="mx-auto rounded-lg h-[100dvh]">
+            <div className="mx-auto rounded-lg">
                 {children}
             </div>
         </RoomListProvider>
